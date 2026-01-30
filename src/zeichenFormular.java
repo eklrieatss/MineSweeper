@@ -162,6 +162,7 @@ public class zeichenFormular extends javax.swing.JFrame {
             for (int j = 0; j < 20; j++) {
                 zeichenPanel1.setColor(i, j, Color.WHITE);
                 zeichenPanel1.setNumber(i, j, 0);
+                zeichenPanel1.setBombs(i, j, false);
             }
         }
     }//GEN-LAST:event_clearButtonMouseClicked
@@ -182,11 +183,13 @@ public class zeichenFormular extends javax.swing.JFrame {
         int y = evt.getY()/22;
 
         if (evt.getButton()==evt.BUTTON1){
-            setColor(x,y,Color.BLACK);
+            setColor(x,y,Color.RED);
+            reloadNumbers();
         }
         
         if (evt.getButton()==evt.BUTTON3){
             setColor(x,y,Color.WHITE);
+            reloadNumbers();
         }
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
@@ -194,44 +197,50 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         clearButtonMouseClicked(null);
+        generateBombs();
+        reloadNumbers();
+    }//GEN-LAST:event_startButtonActionPerformed
+
+    private void reloadNumbers() {
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                if (rn.nextInt(3+1) == 0){ // 1zu3 chance
-                    setColor(i,j,Color.RED);
+                if (getBomb(i, j)) {
+                    setNumber(i,j,0);
+                    continue;
                 }
-            }
-        }
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if (getColor(i, j).equals(Color.RED)) continue;
                 int count = 0;
 
 
-                if (getColor(i-1, j-1).equals(Color.RED)) count++;
-                if (getColor(i, j-1).equals(Color.RED)) count++;
-                if (getColor(i+1, j-1).equals(Color.RED)) count++;
+                if (getBomb(i - 1, j - 1)) count++;
+                if (getBomb(i, j - 1)) count++;
+                if (getBomb(i + 1, j - 1)) count++;
 
 
-                if (getColor(i-1, j).equals(Color.RED)) count++;
-                if (getColor(i+1, j).equals(Color.RED)) count++;
+                if (getBomb(i - 1, j)) count++;
+                if (getBomb(i + 1, j)) count++;
 
 
-                if (getColor(i-1, j+1).equals(Color.RED)) count++;
-                if (getColor(i, j+1).equals(Color.RED)) count++;
-                if (getColor(i+1, j+1).equals(Color.RED)) count++;
+                if (getBomb(i - 1, j + 1)) count++;
+                if (getBomb(i, j + 1)) count++;
+                if (getBomb(i + 1, j + 1)) count++;
+
 
                 setNumber(i, j, count);
             }
         }
+    }
 
+    private void generateBombs(){
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (rn.nextInt(3+1) == 0){ // 1zu3 chance
+                    setBomb(i,j,true);
+                    //setColor(i,j,Color.GREEN);
+                }
+            }
+        }
+    }
 
-        
-    }//GEN-LAST:event_startButtonActionPerformed
-    
-    
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -264,6 +273,11 @@ public class zeichenFormular extends javax.swing.JFrame {
         });
     }
 
+
+
+
+
+    //getter und setter ohne zeichenPanel1 jeweils
     public void setColor(int x, int y, Color c){
         zeichenPanel1.setColor(x, y, c);
     }
@@ -273,6 +287,12 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     public void setNumber(int x, int y, int number){
         zeichenPanel1.setNumber(x, y, number);
+    }
+    public void setBomb(int x, int y, boolean bol){
+        zeichenPanel1.setBombs(x, y, bol);
+    }
+    public boolean getBomb(int x, int y){
+        return zeichenPanel1.getBomb(x, y);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -28,7 +28,8 @@ public class zeichenPanel extends JPanel{
     
     public Color[][] feld = new Color[20][20];
     public int[][] numbers = new int[20][20];
-    
+    public boolean[][] bombs = new boolean[20][20];
+
     
     public zeichenPanel() {                                                    //Konstruktor setzt bevorzugte Gre, legt das Layout fest
         super();
@@ -41,10 +42,12 @@ public class zeichenPanel extends JPanel{
     private void initFeld() {
         feld = new Color[b][h];
         numbers = new int[b][h];
+        bombs = new boolean[b][h];
         for(int i = 0; i<b; i++) {
             for(int j=0; j<h; j++) {
                 feld[i][j] = Color.WHITE;
                 numbers[i][j] = 0;
+                bombs[i][j] = false;
             }
         }
     }
@@ -138,6 +141,21 @@ public class zeichenPanel extends JPanel{
         }
         else
             return 0;
+    }
+
+    public void setBombs(int x, int y, boolean bol){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            bombs[x][y] = bol;
+            repaint();
+        }
+    }
+
+    public boolean getBomb(int x, int y){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            return bombs[x][y];
+        }
+        else
+            return false;
     }
     
     
