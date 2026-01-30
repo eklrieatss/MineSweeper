@@ -46,6 +46,8 @@ public class zeichenFormular extends javax.swing.JFrame {
         setButton = new javax.swing.JButton();
         zeichenPanel1 = new zeichenPanel();
         startButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        bombsCountLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,6 +57,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                 endeButtonMouseClicked(evt);
             }
         });
+
 
         clearButton.setText("Clear");
         clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,11 +88,16 @@ public class zeichenFormular extends javax.swing.JFrame {
         });
 
         startButton.setText("Start");
+
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startButtonActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Bombs: ");
+
+        bombsCountLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,13 +130,21 @@ public class zeichenFormular extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bombsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(bombsCountLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -163,6 +179,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                 zeichenPanel1.setColor(i, j, Color.WHITE);
                 zeichenPanel1.setNumber(i, j, 0);
                 zeichenPanel1.setBombs(i, j, false);
+                bombsCountLabel.setText("0");
             }
         }
     }//GEN-LAST:event_clearButtonMouseClicked
@@ -235,6 +252,7 @@ public class zeichenFormular extends javax.swing.JFrame {
             for (int j = 0; j < 20; j++) {
                 if (rn.nextInt(3+1) == 0){ // 1zu3 chance
                     setBomb(i,j,true);
+                    bombsCountLabel.setText(Integer.parseInt(bombsCountLabel.getText())+1 + "");
                     //setColor(i,j,Color.GREEN);
                 }
             }
@@ -296,10 +314,12 @@ public class zeichenFormular extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bombsCountLabel;
     private javax.swing.JTextField breiteField;
     private javax.swing.JButton clearButton;
     private javax.swing.JButton endeButton;
     private javax.swing.JTextField hoeheField;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
