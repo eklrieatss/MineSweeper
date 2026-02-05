@@ -18,6 +18,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     int y;
     Color c = Color.BLACK;
     Random rn = new Random();
+    boolean gameStarted = false;
 
     /**
      * Creates new form zeichenFormular
@@ -201,11 +202,20 @@ public class zeichenFormular extends javax.swing.JFrame {
 
         if (evt.getButton()==evt.BUTTON1){
             setColor(x,y,Color.RED);
-            reloadNumbers();
+            if (!gameStarted) {
+                clearButtonMouseClicked(null);
+                generateBombs(x, y);
+                reloadNumbers();
+                gameStarted = true;
+            }
         }
         
         if (evt.getButton()==evt.BUTTON3){
-            setColor(x,y,Color.WHITE);
+            if (zeichenPanel1.getColor(x,y).equals(Color.RED)){
+                setColor(x,y,Color.WHITE);
+            }else {
+                setColor(x,y,Color.RED);
+            }
             reloadNumbers();
         }
     }//GEN-LAST:event_zeichenPanel1MouseClicked
@@ -214,7 +224,7 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         clearButtonMouseClicked(null);
-        generateBombs();
+        //generateBombs();
         reloadNumbers();
     }//GEN-LAST:event_startButtonActionPerformed
 
@@ -247,13 +257,24 @@ public class zeichenFormular extends javax.swing.JFrame {
         }
     }
 
-    private void generateBombs(){
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if (rn.nextInt(3+1) == 0){ // 1zu3 chance
+    private void generateBombs(int startX, int startY){
+        int sizeX = zeichenPanel1.getBreite();
+        int sizeY = zeichenPanel1.getHoehe();
+
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+
+                if (i == startX && j == startY){
+                    break;
+                }
+
+                int bombsPlaced = Integer.parseInt(bombsCountLabel.getText());
+                int remainingBombs = 100 - bombsPlaced;
+                int remainingFields = sizeX*sizeY - (i*sizeY + j);
+
+                if (rn.nextDouble() < (double)remainingBombs / remainingFields) {
                     setBomb(i,j,true);
-                    bombsCountLabel.setText(Integer.parseInt(bombsCountLabel.getText())+1 + "");
-                    //setColor(i,j,Color.GREEN);
+                    bombsCountLabel.setText(bombsPlaced + 1 + "");
                 }
             }
         }
