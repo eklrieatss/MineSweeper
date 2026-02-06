@@ -1,5 +1,6 @@
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
@@ -13,10 +14,6 @@ import javax.swing.JOptionPane;
  * @author michael
  */
 public class zeichenFormular extends javax.swing.JFrame {
-    
-    int x;
-    int y;
-    Color c = Color.BLACK;
     Random rn = new Random();
     boolean gameStarted = false;
 
@@ -175,11 +172,15 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
         // TODO add your handling code here:
+        gameStarted = false;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                zeichenPanel1.setColor(i, j, Color.WHITE);
-                zeichenPanel1.setNumber(i, j, 0);
-                zeichenPanel1.setBombs(i, j, false);
+                setFieldColor(i, j, Color.GREEN);
+                setNumber(i, j, 0);
+                setBomb(i, j, false);
+                setExplored(i, j, false);
+                setNumberColor(i,j,Color.GREEN);
+
                 bombsCountLabel.setText("0");
             }
         }
@@ -201,20 +202,31 @@ public class zeichenFormular extends javax.swing.JFrame {
         int y = evt.getY()/22;
 
         if (evt.getButton()==evt.BUTTON1){
-            setColor(x,y,Color.RED);
+            setFieldColor(x,y,Color.RED);
             if (!gameStarted) {
                 clearButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
+                generateFreeSpaces(x,y,Color.pink);
                 gameStarted = true;
             }
         }
+
+        if (evt.getButton()==evt.BUTTON2){
+            System.out.println("------------------------------------");
+            System.out.println("X: " + x + " Y: " + y);
+            System.out.println("Bomb: " + getBomb(x,y));
+            System.out.println("Explored: " + getExplored(x,y));
+            System.out.println("Color: " + rgbToAnsi(getColor(x,y)) + "■" + "\033[0m");
+            System.out.println("Number: " + getNumber(x,y));
+            System.out.println("NumberColor: " + rgbToAnsi(getNumberColor(x,y)) + "■" + "\033[0m");
+        }
         
         if (evt.getButton()==evt.BUTTON3){
-            if (zeichenPanel1.getColor(x,y).equals(Color.RED)){
-                setColor(x,y,Color.WHITE);
+            if (zeichenPanel1.getFieldColor(x,y).equals(Color.RED)){
+                setFieldColor(x,y,Color.pink);
             }else {
-                setColor(x,y,Color.RED);
+                setFieldColor(x,y,Color.RED);
             }
             reloadNumbers();
         }
@@ -223,48 +235,75 @@ public class zeichenFormular extends javax.swing.JFrame {
 
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        clearButtonMouseClicked(null);
-        //generateBombs();
-        reloadNumbers();
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void reloadNumbers() {
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
+        int sizeX = zeichenPanel1.getBreite();
+        int sizeY = zeichenPanel1.getHoehe();
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
                 if (getBomb(i, j)) {
                     setNumber(i,j,0);
                     continue;
                 }
                 int count = 0;
 
-
-                if (getBomb(i - 1, j - 1)) count++;
-                if (getBomb(i, j - 1)) count++;
-                if (getBomb(i + 1, j - 1)) count++;
-
-
-                if (getBomb(i - 1, j)) count++;
-                if (getBomb(i + 1, j)) count++;
-
-
-                if (getBomb(i - 1, j + 1)) count++;
-                if (getBomb(i, j + 1)) count++;
-                if (getBomb(i + 1, j + 1)) count++;
-
-
+                for (int k = i-1; k < i+2; k++) {
+                    for (int l = j-1; l < j+2; l++) {
+                        if (getBomb(k, l)) count++;
+                    }
+                }
                 setNumber(i, j, count);
             }
         }
     }
 
+    private void generateFreeSpaces(int x, int y, Color c){
+        if (x<0 || x>19||y<0 || y>19){
+            return;
+        }
+        if (getNumber(x,y) != 0){
+            setExplored(x,y,true);
+            setFieldColor(x,y, c);
+            setNumberColor(x,y,Color.BLACK);
+            return;
+        }
+        setFieldColor(x, y, c);
+        setExplored(x,y,true);
+        setNumberColor(x,y,Color.BLACK);
+
+        int[][] neighbors = {{x, y + 1}, {x - 1, y}, {x + 1, y}, {x, y - 1}};
+        for (int[] pos : neighbors) {
+            if (!getBomb(pos[0], pos[1]) && !getExplored(pos[0], pos[1])) {
+                generateFreeSpaces(pos[0], pos[1],c);
+            }
+        }
+
+    }
+
     private void generateBombs(int startX, int startY){
         int sizeX = zeichenPanel1.getBreite();
         int sizeY = zeichenPanel1.getHoehe();
+        ArrayList<Integer> spawnX = new ArrayList<>();
+        ArrayList<Integer> spawnY = new ArrayList<>();
+
 
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
 
                 if (i == startX && j == startY){
+                    for (int k = i-1; k < i+2; k++) {
+                        for (int l = j-1; l < j+2; l++) {
+                            setBomb(k,l,false);
+                            //setColor(k,l,Color.GREEN);
+                            spawnX.add(k);
+                            spawnY.add(l);
+                        }
+                    }
+                }
+
+                if (spawnX.contains(i) && spawnY.contains(j)){
+                    //setColor(i,j,Color.GREEN);
                     break;
                 }
 
@@ -274,10 +313,18 @@ public class zeichenFormular extends javax.swing.JFrame {
 
                 if (rn.nextDouble() < (double)remainingBombs / remainingFields) {
                     setBomb(i,j,true);
+                    //setColor(i,j,Color.RED);
                     bombsCountLabel.setText(bombsPlaced + 1 + "");
                 }
+
             }
         }
+//        for(int i: spawn.keySet()){
+//            for(int j: spawn.values()){
+//                System.out.println("X: " + i + " Y: " + j);
+//            }
+//
+//        }
     }
 
     public static void main(String args[]) {
@@ -317,21 +364,45 @@ public class zeichenFormular extends javax.swing.JFrame {
 
 
     //getter und setter ohne zeichenPanel1 jeweils
-    public void setColor(int x, int y, Color c){
-        zeichenPanel1.setColor(x, y, c);
+    public void setFieldColor(int x, int y, Color c){
+        zeichenPanel1.setFieldColor(x, y, c);
     }
     public Color getColor(int x, int y){
-        return zeichenPanel1.getColor(x, y);
+        return zeichenPanel1.getFieldColor(x, y);
     }
 
     public void setNumber(int x, int y, int number){
         zeichenPanel1.setNumber(x, y, number);
     }
+    public int getNumber(int x, int y){
+        return zeichenPanel1.getNumber(x,y);
+    }
+
     public void setBomb(int x, int y, boolean bol){
         zeichenPanel1.setBombs(x, y, bol);
     }
     public boolean getBomb(int x, int y){
         return zeichenPanel1.getBomb(x, y);
+    }
+
+    public void setExplored(int x, int y, boolean bol){
+        zeichenPanel1.setExplored(x, y, bol);
+    }
+    public boolean getExplored(int x, int y){
+        return zeichenPanel1.getExplored(x, y);
+    }
+
+    public void setNumberColor(int x, int y, Color c){
+        zeichenPanel1.setNumberColor(x, y, c);
+    }
+    public Color getNumberColor(int x, int y){
+        return zeichenPanel1.getNumberColor(x, y);
+    }
+
+
+
+    public String rgbToAnsi(Color color){
+        return "\033[38;2;" + color.getRed() + ";" + color.getGreen() + ";" + color.getBlue() + "m";
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

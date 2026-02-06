@@ -7,9 +7,6 @@
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Ellipse2D;
 
 
 /**
@@ -23,12 +20,15 @@ public class zeichenPanel extends JPanel{
     
     public static int b = 20;
     public static int h = 20;
+    public static Color backgroundColor = Color.GREEN;
     
     //public static int[][] feld = new int[b][h];
     
-    public Color[][] feld = new Color[20][20];
+    public Color[][] fieldColor = new Color[20][20];
+    public Color[][] numberColor = new Color[20][20];
     public int[][] numbers = new int[20][20];
     public boolean[][] bombs = new boolean[20][20];
+    public boolean[][] explored = new boolean[20][20];
 
     
     public zeichenPanel() {                                                    //Konstruktor setzt bevorzugte Gre, legt das Layout fest
@@ -40,14 +40,18 @@ public class zeichenPanel extends JPanel{
     }
     
     private void initFeld() {
-        feld = new Color[b][h];
+        fieldColor = new Color[b][h];
         numbers = new int[b][h];
         bombs = new boolean[b][h];
+        explored = new boolean[b][h];
+        numberColor = new Color[b][h];
         for(int i = 0; i<b; i++) {
             for(int j=0; j<h; j++) {
-                feld[i][j] = Color.WHITE;
+                fieldColor[i][j] = backgroundColor;
+                numberColor[i][j] = backgroundColor;
                 numbers[i][j] = 0;
                 bombs[i][j] = false;
+                explored[i][j] = false;
             }
         }
     }
@@ -107,22 +111,19 @@ public class zeichenPanel extends JPanel{
     public int getBreite() {
         return b;
     }
-    
     public int getHoehe() {
         return h;
     }
     
-    public void setColor(int x, int y, Color c){
+    public void setFieldColor(int x, int y, Color c){
         if (-1 < x && x < b && -1 < y && y < h) {
-            feld[x][y] = c;
+            fieldColor[x][y] = c;
             repaint();
         }
     }
-    
-    
-    public Color getColor(int x, int y){
+    public Color getFieldColor(int x, int y){
         if (-1 < x && x < b && -1 < y && y < h) {
-            return feld[x][y];
+            return fieldColor[x][y];
         }
         else
             return Color.white;
@@ -134,7 +135,6 @@ public class zeichenPanel extends JPanel{
             repaint();
         }
     }
-
     public int getNumber(int x, int y){
         if (-1 < x && x < b && -1 < y && y < h) {
             return numbers[x][y];
@@ -149,13 +149,40 @@ public class zeichenPanel extends JPanel{
             repaint();
         }
     }
-
     public boolean getBomb(int x, int y){
         if (-1 < x && x < b && -1 < y && y < h) {
             return bombs[x][y];
         }
         else
             return false;
+    }
+
+    public void setExplored(int x, int y, boolean bol){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            explored[x][y] = bol;
+            repaint();
+        }
+    }
+    public boolean getExplored(int x, int y){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            return explored[x][y];
+        }
+        else
+            return false;
+    }
+
+    public void setNumberColor(int x, int y, Color c){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            numberColor[x][y] = c;
+            repaint();
+        }
+    }
+    public Color getNumberColor(int x, int y){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            return numberColor[x][y];
+        }
+        else
+            return Color.white;
     }
     
     
@@ -220,11 +247,11 @@ public class zeichenPanel extends JPanel{
         g2d.setFont(new Font("Arial", Font.BOLD, 12));
         for(int i=0; i<b; i++) {
             for(int j=0; j<h; j++) {
-                g2d.setColor(feld[i][j]);
+                g2d.setColor(fieldColor[i][j]);
                 g2d.fillRect(1+22*i,1+22*j,20,20);
                 
                 if (numbers[i][j] > 0) {
-                    g2d.setColor(Color.BLACK);
+                    g2d.setColor(numberColor[i][j]);
                     g2d.drawString("" + numbers[i][j], 1+22*i+6, 1+22*j+16);
                 }
             }
