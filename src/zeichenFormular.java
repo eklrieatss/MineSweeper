@@ -180,6 +180,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                 setBomb(i, j, false);
                 setExplored(i, j, false);
                 setNumberColor(i,j,Color.GREEN);
+                setFlag(i,j,false);
 
                 bombsCountLabel.setText("0");
             }
@@ -202,13 +203,24 @@ public class zeichenFormular extends javax.swing.JFrame {
         int y = evt.getY()/22;
 
         if (evt.getButton()==evt.BUTTON1){
-            setFieldColor(x,y,Color.RED);
             if (!gameStarted) {
                 clearButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
                 generateFreeSpaces(x,y,Color.pink);
                 gameStarted = true;
+            }else{
+                if (getFlag(x,y) && getExplored(x,y)){
+                    return;
+                }
+                if (getBomb(x,y)){
+                    System.out.println("Booooooooooooooooooooooooooooooooooooooooooom");
+                }else{
+                    setExplored(x,y,true);
+                    setFieldColor(x,y,Color.PINK);
+                    setNumberColor(x,y,Color.BLACK);
+                    generateFreeSpaces(x,y,Color.PINK);
+                }
             }
         }
 
@@ -217,16 +229,21 @@ public class zeichenFormular extends javax.swing.JFrame {
             System.out.println("X: " + x + " Y: " + y);
             System.out.println("Bomb: " + getBomb(x,y));
             System.out.println("Explored: " + getExplored(x,y));
+            System.out.println("Flag: " + getFlag(x,y));
             System.out.println("Color: " + rgbToAnsi(getColor(x,y)) + "■" + "\033[0m");
             System.out.println("Number: " + getNumber(x,y));
             System.out.println("NumberColor: " + rgbToAnsi(getNumberColor(x,y)) + "■" + "\033[0m");
         }
         
-        if (evt.getButton()==evt.BUTTON3){
-            if (zeichenPanel1.getFieldColor(x,y).equals(Color.RED)){
-                setFieldColor(x,y,Color.pink);
-            }else {
-                setFieldColor(x,y,Color.RED);
+        if (evt.getButton()==evt.BUTTON3){ //Rechtsklick
+            if (!getExplored(x,y)){ //place flag
+                if (getFlag(x,y)){
+                    setCombinedColor(x,y,Color.GREEN);
+                    setFlag(x,y,false);
+                }else {
+                    setCombinedColor(x, y, Color.RED);
+                    setFlag(x,y,true);
+                }
             }
             reloadNumbers();
         }
@@ -397,6 +414,17 @@ public class zeichenFormular extends javax.swing.JFrame {
     }
     public Color getNumberColor(int x, int y){
         return zeichenPanel1.getNumberColor(x, y);
+    }
+    public void setCombinedColor(int x, int y, Color c){
+        setNumberColor(x,y,c);
+        setFieldColor(x,y,c);
+    }
+
+    public void setFlag(int x, int y, boolean bol){
+        zeichenPanel1.setFlag(x, y, bol);
+    }
+    public boolean getFlag(int x, int y){
+        return zeichenPanel1.getFlag(x, y);
     }
 
 
