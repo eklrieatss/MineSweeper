@@ -33,49 +33,21 @@ public class zeichenFormular extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        endeButton = new javax.swing.JButton();
-        clearButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        breiteField = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        hoeheField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        setButton = new javax.swing.JButton();
+        resetButton = new javax.swing.JButton();
         zeichenPanel1 = new zeichenPanel();
-        startButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         bombsCountLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        flagCountLabel = new javax.swing.JLabel();
+        progressLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        endeButton.setText("Beenden");
-        endeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        resetButton.setText("Reset");
+        resetButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                endeButtonMouseClicked(evt);
-            }
-        });
-
-
-        clearButton.setText("Clear");
-        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clearButtonMouseClicked(evt);
-            }
-        });
-
-        jLabel2.setText("Größe:");
-
-        jLabel3.setText("x");
-
-        jLabel4.setText("Breite");
-
-        jLabel5.setText("Höhe");
-
-        setButton.setText("setzen");
-        setButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setButtonMouseClicked(evt);
+                resetButtonMouseClicked(evt);
             }
         });
 
@@ -85,54 +57,47 @@ public class zeichenFormular extends javax.swing.JFrame {
             }
         });
 
-        startButton.setText("Start");
-
-        startButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startButtonActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("Bombs: ");
 
         bombsCountLabel.setText("0");
+
+        jLabel2.setText("Flags:");
+
+        jLabel3.setText("Progress:");
+
+        flagCountLabel.setText("0");
+
+        progressLabel.setText("0/0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(breiteField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3))
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(hoeheField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(setButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(clearButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(endeButton)))
-                .addGap(18, 18, 18)
-                .addComponent(startButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bombsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bombsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(flagCountLabel))
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(progressLabel)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(212, 212, 212)
+                .addComponent(resetButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,37 +105,27 @@ public class zeichenFormular extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(bombsCountLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(breiteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(hoeheField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(setButton)
-                    .addComponent(endeButton)
-                    .addComponent(clearButton)
-                    .addComponent(startButton))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(bombsCountLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(flagCountLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(progressLabel)))
+                .addGap(18, 18, 18)
+                .addComponent(resetButton)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void endeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_endeButtonMouseClicked
-        int antwort = JOptionPane.showConfirmDialog(null, "Wollen Sie wirklich beenden?", "Bestätigen",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (antwort == JOptionPane.YES_OPTION)
-        System.exit(0);
-    }//GEN-LAST:event_endeButtonMouseClicked
-
-    private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
+    private void resetButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetButtonMouseClicked
         // TODO add your handling code here:
         gameStarted = false;
         for (int i = 0; i < 20; i++) {
@@ -181,22 +136,12 @@ public class zeichenFormular extends javax.swing.JFrame {
                 setExplored(i, j, false);
                 setNumberColor(i,j,Color.GREEN);
                 setFlag(i,j,false);
-
+                flagCountLabel.setText("0");
                 bombsCountLabel.setText("0");
+                progressLabel.setText("0/0");
             }
         }
-    }//GEN-LAST:event_clearButtonMouseClicked
-
-    private void setButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setButtonMouseClicked
-        // TODO add your handling code here:
-        int b,h;
-
-        b = Integer.parseInt(breiteField.getText());
-        h = Integer.parseInt(hoeheField.getText());
-
-        zeichenPanel1.setBreite(b);
-        zeichenPanel1.setHoehe(h);
-    }//GEN-LAST:event_setButtonMouseClicked
+    }//GEN-LAST:event_resetButtonMouseClicked
 
     private void zeichenPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zeichenPanel1MouseClicked
         int x = evt.getX()/22;
@@ -204,10 +149,11 @@ public class zeichenFormular extends javax.swing.JFrame {
 
         if (evt.getButton()==evt.BUTTON1){
             if (!gameStarted) {
-                clearButtonMouseClicked(null);
+                resetButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
                 generateFreeSpaces(x,y,Color.pink);
+                reloadProgress();
                 gameStarted = true;
             }else{
                 if (getFlag(x,y) && getExplored(x,y)){
@@ -220,6 +166,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                     setFieldColor(x,y,Color.PINK);
                     setNumberColor(x,y,Color.BLACK);
                     generateFreeSpaces(x,y,Color.PINK);
+                    reloadProgress();
+
                 }
             }
         }
@@ -240,9 +188,11 @@ public class zeichenFormular extends javax.swing.JFrame {
                 if (getFlag(x,y)){
                     setCombinedColor(x,y,Color.GREEN);
                     setFlag(x,y,false);
+                    flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) - 1 + "");
                 }else {
                     setCombinedColor(x, y, Color.RED);
                     setFlag(x,y,true);
+                    flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) + 1 + "");
                 }
             }
             reloadNumbers();
@@ -250,9 +200,6 @@ public class zeichenFormular extends javax.swing.JFrame {
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
 
-
-    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-    }//GEN-LAST:event_startButtonActionPerformed
 
     private void reloadNumbers() {
         int sizeX = zeichenPanel1.getBreite();
@@ -336,12 +283,20 @@ public class zeichenFormular extends javax.swing.JFrame {
 
             }
         }
-//        for(int i: spawn.keySet()){
-//            for(int j: spawn.values()){
-//                System.out.println("X: " + i + " Y: " + j);
-//            }
-//
-//        }
+    }
+
+    private void reloadProgress(){
+        int total = zeichenPanel1.getBreite() * zeichenPanel1.getHoehe() - Integer.parseInt(bombsCountLabel.getText());
+        int explored = 0;
+        for (int i = 0; i < 20; i++){
+            for (int j = 0; j < 20; j++){
+                if (getExplored(i,j)){
+                explored++;
+                }
+            }
+        }
+
+        progressLabel.setText(explored + "/" + total);
     }
 
     public static void main(String args[]) {
@@ -435,17 +390,12 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bombsCountLabel;
-    private javax.swing.JTextField breiteField;
-    private javax.swing.JButton clearButton;
-    private javax.swing.JButton endeButton;
-    private javax.swing.JTextField hoeheField;
+    private javax.swing.JLabel flagCountLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JButton setButton;
-    private javax.swing.JButton startButton;
+    private javax.swing.JLabel progressLabel;
+    private javax.swing.JButton resetButton;
     private zeichenPanel zeichenPanel1;
     // End of variables declaration//GEN-END:variables
 }
