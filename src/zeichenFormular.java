@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 public class zeichenFormular extends javax.swing.JFrame {
     Random rn = new Random();
     boolean gameStarted = false;
+    private ArrayList<Integer> spawnX = new ArrayList<>();
+    private ArrayList<Integer> spawnY = new ArrayList<>();
 
     /**
      * Creates new form zeichenFormular
@@ -126,7 +128,6 @@ public class zeichenFormular extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetButtonMouseClicked
-        // TODO add your handling code here:
         gameStarted = false;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
@@ -141,6 +142,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                 progressLabel.setText("0/0");
             }
         }
+        spawnX = new ArrayList<>();
+        spawnY = new ArrayList<>();
     }//GEN-LAST:event_resetButtonMouseClicked
 
     private void zeichenPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zeichenPanel1MouseClicked
@@ -155,6 +158,9 @@ public class zeichenFormular extends javax.swing.JFrame {
                 generateFreeSpaces(x,y,Color.pink);
                 reloadProgress();
                 gameStarted = true;
+
+
+
             }else{
                 if (getFlag(x,y) && getExplored(x,y)){
                     return;
@@ -199,8 +205,6 @@ public class zeichenFormular extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
-
-
     private void reloadNumbers() {
         int sizeX = zeichenPanel1.getBreite();
         int sizeY = zeichenPanel1.getHoehe();
@@ -236,10 +240,11 @@ public class zeichenFormular extends javax.swing.JFrame {
         setExplored(x,y,true);
         setNumberColor(x,y,Color.BLACK);
 
-        int[][] neighbors = {{x, y + 1}, {x - 1, y}, {x + 1, y}, {x, y - 1}};
-        for (int[] pos : neighbors) {
-            if (!getBomb(pos[0], pos[1]) && !getExplored(pos[0], pos[1])) {
-                generateFreeSpaces(pos[0], pos[1],c);
+        for (int i = x-1; i < x+2; i++) {
+            for (int j = y-1; j < y+2; j++) {
+                if (!getBomb(i,j) && !getExplored(i,j)) {
+                    generateFreeSpaces(i,j,c);
+                }
             }
         }
 
@@ -248,8 +253,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     private void generateBombs(int startX, int startY){
         int sizeX = zeichenPanel1.getBreite();
         int sizeY = zeichenPanel1.getHoehe();
-        ArrayList<Integer> spawnX = new ArrayList<>();
-        ArrayList<Integer> spawnY = new ArrayList<>();
+
 
 
         for (int i = 0; i < sizeX; i++) {
@@ -277,7 +281,7 @@ public class zeichenFormular extends javax.swing.JFrame {
 
                 if (rn.nextDouble() < (double)remainingBombs / remainingFields) {
                     setBomb(i,j,true);
-                    //setColor(i,j,Color.RED);
+                    //setFieldColor(i,j,Color.RED);
                     bombsCountLabel.setText(bombsPlaced + 1 + "");
                 }
 
@@ -326,12 +330,12 @@ public class zeichenFormular extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new zeichenFormular().setVisible(true);
+                var zF = new zeichenFormular();
+                zF.setVisible(true);
+                zF.setTitle("MineSweeper");
             }
         });
     }
-
-
 
 
 
@@ -370,6 +374,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     public Color getNumberColor(int x, int y){
         return zeichenPanel1.getNumberColor(x, y);
     }
+
     public void setCombinedColor(int x, int y, Color c){
         setNumberColor(x,y,c);
         setFieldColor(x,y,c);
@@ -387,6 +392,9 @@ public class zeichenFormular extends javax.swing.JFrame {
     public String rgbToAnsi(Color color){
         return "\033[38;2;" + color.getRed() + ";" + color.getGreen() + ";" + color.getBlue() + "m";
     }
+
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bombsCountLabel;

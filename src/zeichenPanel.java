@@ -255,13 +255,14 @@ public class zeichenPanel extends JPanel{
         }
         
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 12));
+
         for(int i=0; i<b; i++) {
             for(int j=0; j<h; j++) {
                 g2d.setColor(fieldColor[i][j]);
                 g2d.fillRect(1+22*i,1+22*j,20,20);
                 
                 if (numbers[i][j] > 0) {
+                    g2d.setFont(new Font("", Font.BOLD, 12));
                     g2d.setColor(numberColor[i][j]);
                     g2d.drawString("" + numbers[i][j], 1+22*i+6, 1+22*j+16);
                 }
