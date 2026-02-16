@@ -2,7 +2,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 public class zeichenFormular extends javax.swing.JFrame {
     Random rn = new Random();
     boolean gameStarted = false;
+    boolean gameLost = false;
     private ArrayList<Integer> spawnX = new ArrayList<>();
     private ArrayList<Integer> spawnY = new ArrayList<>();
 
@@ -43,6 +44,9 @@ public class zeichenFormular extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         flagCountLabel = new javax.swing.JLabel();
         progressLabel = new javax.swing.JLabel();
+        loseLabel = new javax.swing.JLabel();
+        revealButton = new javax.swing.JButton();
+        settingsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,34 +75,56 @@ public class zeichenFormular extends javax.swing.JFrame {
 
         progressLabel.setText("0/0");
 
+        loseLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        loseLabel.setForeground(new java.awt.Color(255, 51, 51));
+        loseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loseLabel.setText("Du bist explodiert. Drücke \"Reset\" um ein neues Spiel zu starten oder \"Reveal\" um die übrigen Bomben zu sehen.");
+        loseLabel.setAutoscrolls(true);
+
+        revealButton.setText("Reveal");
+        revealButton.setEnabled(false);
+        revealButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                revealButtonMouseClicked(evt);
+            }
+        });
+
+        settingsButton.setText("Settings");
+        settingsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(loseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bombsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(zeichenPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(flagCountLabel))
                             .addComponent(jLabel3)
+                            .addComponent(progressLabel)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(progressLabel)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(resetButton)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bombsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(156, 156, 156)
+                        .addComponent(settingsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(revealButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -119,16 +145,24 @@ public class zeichenFormular extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(progressLabel)))
-                .addGap(18, 18, 18)
-                .addComponent(resetButton)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetButton)
+                    .addComponent(revealButton)
+                    .addComponent(settingsButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
         );
+
+        loseLabel.setVisible(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetButtonMouseClicked
         gameStarted = false;
+        gameLost = false;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 setFieldColor(i, j, Color.GREEN);
@@ -137,13 +171,16 @@ public class zeichenFormular extends javax.swing.JFrame {
                 setExplored(i, j, false);
                 setNumberColor(i,j,Color.GREEN);
                 setFlag(i,j,false);
-                flagCountLabel.setText("0");
-                bombsCountLabel.setText("0");
-                progressLabel.setText("0/0");
             }
         }
+        flagCountLabel.setText("0");
+        bombsCountLabel.setText("0");
+        progressLabel.setText("0/0");
+        loseLabel.setVisible(false);
+        revealButton.setEnabled(false);
         spawnX = new ArrayList<>();
         spawnY = new ArrayList<>();
+
     }//GEN-LAST:event_resetButtonMouseClicked
 
     private void zeichenPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zeichenPanel1MouseClicked
@@ -151,6 +188,10 @@ public class zeichenFormular extends javax.swing.JFrame {
         int y = evt.getY()/22;
 
         if (evt.getButton()==evt.BUTTON1){
+            if (gameLost){
+                return;
+            }
+
             if (!gameStarted) {
                 resetButtonMouseClicked(null);
                 generateBombs(x, y);
@@ -167,6 +208,9 @@ public class zeichenFormular extends javax.swing.JFrame {
                 }
                 if (getBomb(x,y)){
                     System.out.println("Booooooooooooooooooooooooooooooooooooooooooom");
+                    loseLabel.setVisible(true);
+                    revealButton.setEnabled(true);
+                    gameLost = true;
                 }else{
                     setExplored(x,y,true);
                     setFieldColor(x,y,Color.PINK);
@@ -190,6 +234,9 @@ public class zeichenFormular extends javax.swing.JFrame {
         }
         
         if (evt.getButton()==evt.BUTTON3){ //Rechtsklick
+            if (gameLost){
+                return;
+            }
             if (!getExplored(x,y)){ //place flag
                 if (getFlag(x,y)){
                     setCombinedColor(x,y,Color.GREEN);
@@ -205,7 +252,17 @@ public class zeichenFormular extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
+    private void revealButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revealButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_revealButtonMouseClicked
+
+    private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_settingsButtonMouseClicked
+
     private void reloadNumbers() {
+
+
         int sizeX = zeichenPanel1.getBreite();
         int sizeY = zeichenPanel1.getHoehe();
         for (int i = 0; i < sizeX; i++) {
@@ -326,7 +383,6 @@ public class zeichenFormular extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(zeichenFormular.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -402,8 +458,11 @@ public class zeichenFormular extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel loseLabel;
     private javax.swing.JLabel progressLabel;
     private javax.swing.JButton resetButton;
+    private javax.swing.JButton revealButton;
+    private javax.swing.JButton settingsButton;
     private zeichenPanel zeichenPanel1;
     // End of variables declaration//GEN-END:variables
 }
