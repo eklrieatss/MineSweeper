@@ -30,6 +30,8 @@ public class zeichenPanel extends JPanel{
     public boolean[][] bombs = new boolean[20][20];
     public boolean[][] explored = new boolean[20][20];
     public boolean[][] flag = new boolean[20][20];
+    public String[][] icon = new String[20][20];
+    public Color[][] iconColor = new Color[20][20];
 
     
     public zeichenPanel() {                                                    //Konstruktor setzt bevorzugte Gre, legt das Layout fest
@@ -47,6 +49,8 @@ public class zeichenPanel extends JPanel{
         explored = new boolean[b][h];
         numberColor = new Color[b][h];
         flag = new boolean[b][h];
+        icon = new String[b][h];
+        iconColor = new Color[b][h];
         for(int i = 0; i<b; i++) {
             for(int j=0; j<h; j++) {
                 fieldColor[i][j] = backgroundColor;
@@ -55,6 +59,8 @@ public class zeichenPanel extends JPanel{
                 bombs[i][j] = false;
                 explored[i][j] = false;
                 flag[i][j] = false;
+                icon[i][j] = "";
+                iconColor[i][j] = backgroundColor;
             }
         }
     }
@@ -191,11 +197,30 @@ public class zeichenPanel extends JPanel{
     public void setFlag(int x, int y, boolean bol){
         flag[x][y] = bol;
     }
-
     public boolean getFlag(int x, int y){
         return flag[x][y];
     }
-    
+
+    public void setIcon(int x, int y, String str){
+        icon[x][y] = str;
+    }
+    public String getIcon(int x, int y){
+        return icon[x][y];
+    }
+
+    public void setIconColor(int x, int y, Color c){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            iconColor[x][y] = c;
+            repaint();
+        }
+    }
+    public Color getIconColor(int x, int y){
+        if (-1 < x && x < b && -1 < y && y < h) {
+            return iconColor[x][y];
+        }
+        else
+            return Color.BLACK;
+    }
     
     @Override
     public void paintComponent(final Graphics g) {
@@ -266,6 +291,10 @@ public class zeichenPanel extends JPanel{
                     g2d.setColor(numberColor[i][j]);
                     g2d.drawString("" + numbers[i][j], 1+22*i+6, 1+22*j+16);
                 }
+
+                g2d.setColor(iconColor[i][j]);
+                g2d.setFont(new Font("", Font.BOLD, 16));
+                g2d.drawString(icon[i][j], 1+22*i+3, 1+22*j+17);
             }
         }
     }

@@ -1,6 +1,7 @@
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import javax.swing.*;
 
@@ -19,6 +20,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     boolean gameLost = false;
     private ArrayList<Integer> spawnX = new ArrayList<>();
     private ArrayList<Integer> spawnY = new ArrayList<>();
+    private HashMap<Integer, Color> intColor = new HashMap<>();
 
     /**
      * Creates new form zeichenFormular
@@ -203,14 +205,14 @@ public class zeichenFormular extends javax.swing.JFrame {
 
 
             }else{
-                if (getFlag(x,y) && getExplored(x,y)){
+                if (getFlag(x,y) || getExplored(x,y)){
                     return;
                 }
                 if (getBomb(x,y)){
-                    System.out.println("Booooooooooooooooooooooooooooooooooooooooooom");
                     loseLabel.setVisible(true);
                     revealButton.setEnabled(true);
                     gameLost = true;
+                    progressLabel.setText("Lost");
                 }else{
                     setExplored(x,y,true);
                     setFieldColor(x,y,Color.PINK);
@@ -239,12 +241,15 @@ public class zeichenFormular extends javax.swing.JFrame {
             }
             if (!getExplored(x,y)){ //place flag
                 if (getFlag(x,y)){
-                    setCombinedColor(x,y,Color.GREEN);
+                    //setCombinedColor(x,y,Color.GREEN);
                     setFlag(x,y,false);
+                    setIcon(x, y, "");
                     flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) - 1 + "");
                 }else {
-                    setCombinedColor(x, y, Color.RED);
+                    //setCombinedColor(x, y, Color.RED);
                     setFlag(x,y,true);
+                    setIcon(x,y, "🚩");
+                    setIconColor(x,y,Color.RED);
                     flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) + 1 + "");
                 }
             }
@@ -253,7 +258,19 @@ public class zeichenFormular extends javax.swing.JFrame {
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
     private void revealButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revealButtonMouseClicked
-        // TODO add your handling code here:
+        if (!revealButton.isEnabled()){
+            return;
+        }
+
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
+                if (getBomb(x,y)){
+                    setFieldColor(x,y,Color.RED);
+                    continue;
+                }
+                generateFreeSpaces(x,y,Color.PINK);
+            }
+        }
     }//GEN-LAST:event_revealButtonMouseClicked
 
     private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
@@ -290,12 +307,12 @@ public class zeichenFormular extends javax.swing.JFrame {
         if (getNumber(x,y) != 0){
             setExplored(x,y,true);
             setFieldColor(x,y, c);
-            setNumberColor(x,y,Color.BLACK);
+            setNumberColor(x,y,getIntColor(getNumber(x,y)));
             return;
         }
         setFieldColor(x, y, c);
         setExplored(x,y,true);
-        setNumberColor(x,y,Color.BLACK);
+        setNumberColor(x,y,getIntColor(getNumber(x,y)));
 
         for (int i = x-1; i < x+2; i++) {
             for (int j = y-1; j < y+2; j++) {
@@ -443,10 +460,56 @@ public class zeichenFormular extends javax.swing.JFrame {
         return zeichenPanel1.getFlag(x, y);
     }
 
+    public void setIcon(int x, int y, String str){
+        zeichenPanel1.setIcon(x,y,str);
+    }
+    public String getIcon(int x, int y){
+        return zeichenPanel1.getIcon(x,y);
+    }
+
+    public void setIconColor(int x, int y, Color c){
+        zeichenPanel1.setIconColor(x, y, c);
+    }
+    public Color getIconColor(int x, int y){
+        return zeichenPanel1.getIconColor(x, y);
+    }
 
 
     public String rgbToAnsi(Color color){
         return "\033[38;2;" + color.getRed() + ";" + color.getGreen() + ";" + color.getBlue() + "m";
+    }
+
+    private Color getIntColor(int number){
+        switch (number){
+            case 1 -> {
+                return (new Color(0, 0, 255));
+            }
+            case 2 -> {
+                return new Color(0, 128,0);
+            }
+            case 3 -> {
+                return new Color(255,0,0);
+            }
+            case 4 -> {
+                return new Color(0,0,128);
+            }
+            case 5 -> {
+                return new Color(128,0,0);
+            }
+            case 6 -> {
+                return new Color(0,128,128);
+            }
+            case 7 -> {
+                return new Color(0,0,0);
+            }
+            case 8 -> {
+                return new Color(128,128,128);
+            }
+            default -> {
+                return Color.WHITE;
+            }
+        }
+
     }
 
 
