@@ -20,7 +20,6 @@ public class zeichenFormular extends javax.swing.JFrame {
     boolean gameLost = false;
     private ArrayList<Integer> spawnX = new ArrayList<>();
     private ArrayList<Integer> spawnY = new ArrayList<>();
-    private HashMap<Integer, Color> intColor = new HashMap<>();
 
     /**
      * Creates new form zeichenFormular
@@ -173,6 +172,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                 setExplored(i, j, false);
                 setNumberColor(i,j,Color.GREEN);
                 setFlag(i,j,false);
+                setIcon(i,j,"", Color.BLACK);
             }
         }
         flagCountLabel.setText("0");
@@ -213,6 +213,12 @@ public class zeichenFormular extends javax.swing.JFrame {
                     revealButton.setEnabled(true);
                     gameLost = true;
                     progressLabel.setText("Lost");
+                    setIcon(x,y,"💣", Color.RED);
+                    setFieldColor(x,y,Color.BLACK);
+
+
+
+
                 }else{
                     setExplored(x,y,true);
                     setFieldColor(x,y,Color.PINK);
@@ -243,13 +249,12 @@ public class zeichenFormular extends javax.swing.JFrame {
                 if (getFlag(x,y)){
                     //setCombinedColor(x,y,Color.GREEN);
                     setFlag(x,y,false);
-                    setIcon(x, y, "");
+                    setIcon(x, y, "",  Color.BLACK);
                     flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) - 1 + "");
                 }else {
                     //setCombinedColor(x, y, Color.RED);
                     setFlag(x,y,true);
-                    setIcon(x,y, "🚩");
-                    setIconColor(x,y,Color.RED);
+                    setIcon(x,y, "🚩",Color.RED);
                     flagCountLabel.setText(Integer.parseInt(flagCountLabel.getText()) + 1 + "");
                 }
             }
@@ -266,11 +271,19 @@ public class zeichenFormular extends javax.swing.JFrame {
             for (int y = 0; y < 20; y++) {
                 if (getBomb(x,y)){
                     setFieldColor(x,y,Color.RED);
+                    setIcon(x,y,"💣", Color.BLACK);
                     continue;
                 }
                 generateFreeSpaces(x,y,Color.PINK);
             }
         }
+//        for (int i = 0; i < 9; i++) {
+//            setNumber(i,0,i);
+//            setNumberColor(i,0,getIntColor(getNumber(i,0)));
+//            setIcon(i,0,"", Color.WHITE);
+//            setFieldColor(i,0,Color.PINK);
+//        }
+
     }//GEN-LAST:event_revealButtonMouseClicked
 
     private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
@@ -460,16 +473,14 @@ public class zeichenFormular extends javax.swing.JFrame {
         return zeichenPanel1.getFlag(x, y);
     }
 
-    public void setIcon(int x, int y, String str){
+    public void setIcon(int x, int y, String str, Color c){
         zeichenPanel1.setIcon(x,y,str);
+        zeichenPanel1.setIconColor(x,y,c);
     }
     public String getIcon(int x, int y){
         return zeichenPanel1.getIcon(x,y);
     }
 
-    public void setIconColor(int x, int y, Color c){
-        zeichenPanel1.setIconColor(x, y, c);
-    }
     public Color getIconColor(int x, int y){
         return zeichenPanel1.getIconColor(x, y);
     }

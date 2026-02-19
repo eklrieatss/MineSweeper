@@ -21,7 +21,7 @@ public class zeichenPanel extends JPanel{
     public static int b = 20;
     public static int h = 20;
     public static Color backgroundColor = Color.GREEN;
-    
+
     //public static int[][] feld = new int[b][h];
     
     public Color[][] fieldColor = new Color[20][20];
@@ -292,9 +292,22 @@ public class zeichenPanel extends JPanel{
                     g2d.drawString("" + numbers[i][j], 1+22*i+6, 1+22*j+16);
                 }
 
+                int sx = 0;
+                int sy = 0;
+                int size = 0;
+                if (icon[i][j].equals("💣")){
+                    sx = 1+22*i+2;
+                    sy = 1+22*j+18;
+                    size = 16;
+                }
+                if (icon[i][j].equals("🚩")){
+                   sx = 1+22*i;
+                   sy = 1+22*j+18;
+                   size = 20;
+                }
                 g2d.setColor(iconColor[i][j]);
-                g2d.setFont(new Font("", Font.BOLD, 16));
-                g2d.drawString(icon[i][j], 1+22*i+3, 1+22*j+17);
+                g2d.setFont(new Font("", Font.PLAIN, size));
+                g2d.drawString(icon[i][j], sx, sy);
             }
         }
     }
