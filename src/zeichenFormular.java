@@ -287,7 +287,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     }//GEN-LAST:event_revealButtonMouseClicked
 
     private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
-        // TODO add your handling code here:
+        new settingsFormular().setVisible(true);
     }//GEN-LAST:event_settingsButtonMouseClicked
 
     private void reloadNumbers() {
