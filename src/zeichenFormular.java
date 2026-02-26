@@ -21,6 +21,10 @@ public class zeichenFormular extends javax.swing.JFrame {
     private ArrayList<Integer> spawnX = new ArrayList<>();
     private ArrayList<Integer> spawnY = new ArrayList<>();
 
+    private settingsFormular settingsFormular = new settingsFormular();
+
+
+
     /**
      * Creates new form zeichenFormular
      */
@@ -287,7 +291,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     }//GEN-LAST:event_revealButtonMouseClicked
 
     private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
-        new settingsFormular().setVisible(true);
+        settingsFormular.setVisible(true);
     }//GEN-LAST:event_settingsButtonMouseClicked
 
     private void reloadNumbers() {
