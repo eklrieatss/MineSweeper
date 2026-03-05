@@ -18,7 +18,7 @@ public class settingsFormular extends javax.swing.JFrame {
     public Color forground = Color.green;
     public int size = 20;
 
-    private Map<String,String> colors = new HashMap<>();
+    private final Map<String,String> colors = new HashMap<>();
 
 
 
@@ -27,6 +27,7 @@ public class settingsFormular extends javax.swing.JFrame {
      */
     public settingsFormular() {
         initComponents();
+        setColorHash();
     }
 
     /**
@@ -51,7 +52,7 @@ public class settingsFormular extends javax.swing.JFrame {
         backgroundColorDropDown = new javax.swing.JComboBox<>();
         forgroundTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Settings");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -85,21 +86,31 @@ public class settingsFormular extends javax.swing.JFrame {
             }
         });
 
-        forgroundColorDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        backgroundTextField.setText("#ffafaf");
-        backgroundTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backgroundTextFieldActionPerformed(evt);
+        forgroundColorDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Preset", "Magenta", "Pink", "Green", "Black", "Yellow", "Cyan", "Dark Gray", "Red", "Orange", "Gray", "White", "Blue", "Light Gray" }));
+        forgroundColorDropDown.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                forgroundColorDropDownItemStateChanged(evt);
             }
         });
+
+        backgroundTextField.setText("#ffafaf");
         backgroundTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 backgroundTextFieldKeyReleased(evt);
             }
         });
 
-        backgroundColorDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        backgroundColorDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Preset", "Magenta", "Pink", "Green", "Black", "Yellow", "Cyan", "Dark Gray", "Red", "Orange", "Gray", "White", "Blue", "Light Gray" }));
+        backgroundColorDropDown.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                backgroundColorDropDownItemStateChanged(evt);
+            }
+        });
+        backgroundColorDropDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundColorDropDownActionPerformed(evt);
+            }
+        });
 
         forgroundTextField.setText("#00ff00");
         forgroundTextField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -141,7 +152,7 @@ public class settingsFormular extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(sizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 174, Short.MAX_VALUE)))
+                        .addGap(0, 156, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,6 +215,8 @@ public class settingsFormular extends javax.swing.JFrame {
         System.out.println(forground);
 
 
+
+
     }//GEN-LAST:event_applyButtonMouseClicked
 
     private void sizeTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sizeTextFieldKeyReleased
@@ -218,9 +231,21 @@ public class settingsFormular extends javax.swing.JFrame {
         reloadApply();
     }//GEN-LAST:event_forgroundTextFieldKeyReleased
 
-    private void backgroundTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundTextFieldActionPerformed
+    private void backgroundColorDropDownItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_backgroundColorDropDownItemStateChanged
+        String sel = evt.getItem().toString();
+        backgroundTextField.setText(colors.get(sel));
+        reloadApply();
+    }//GEN-LAST:event_backgroundColorDropDownItemStateChanged
+
+    private void forgroundColorDropDownItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_forgroundColorDropDownItemStateChanged
+        String sel = evt.getItem().toString();
+        forgroundTextField.setText(colors.get(sel));
+        reloadApply();
+    }//GEN-LAST:event_forgroundColorDropDownItemStateChanged
+
+    private void backgroundColorDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundColorDropDownActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_backgroundTextFieldActionPerformed
+    }//GEN-LAST:event_backgroundColorDropDownActionPerformed
 
     private void reloadApply(){
         try {
@@ -240,26 +265,21 @@ public class settingsFormular extends javax.swing.JFrame {
 
         return hex;
     }
-
-    Map<String,String> map = new HashMap<>();
-
     private void setColorHash(){
-
-        colors.put("magenta", "#FF00FF");
-        colors.put("pink", "#FFAFAF");
-        colors.put("green", "#00FF00");
-        colors.put("black", "#000000");
-        colors.put("yellow", "#FFFF00");
-        colors.put("cyan", "#00FFFF");
-        colors.put("dark gray", "#404040");
-        colors.put("red", "#FF0000");
-        colors.put("orange", "#FFC800");
-        colors.put("gray", "#808080");
-        colors.put("white", "#FFFFFF");
-        colors.put("blue", "#0000FF");
-        colors.put("darkgray", "#404040");
-        colors.put("light gray", "#C0C0C0");
-        colors.put("lightgray", "#C0C0C0");
+        colors.put("Preset", "");
+        colors.put("Magenta", "#FF00FF");
+        colors.put("Pink", "#FFAFAF");
+        colors.put("Green", "#00FF00");
+        colors.put("Black", "#000000");
+        colors.put("Yellow", "#FFFF00");
+        colors.put("Cyan", "#00FFFF");
+        colors.put("Dark Gray", "#404040");
+        colors.put("Red", "#FF0000");
+        colors.put("Orange", "#FFC800");
+        colors.put("Gray", "#808080");
+        colors.put("White", "#FFFFFF");
+        colors.put("Blue", "#0000FF");
+        colors.put("Light Gray", "#C0C0C0");
     }
 
     

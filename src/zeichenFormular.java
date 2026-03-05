@@ -21,6 +21,10 @@ public class zeichenFormular extends javax.swing.JFrame {
     private ArrayList<Integer> spawnX = new ArrayList<>();
     private ArrayList<Integer> spawnY = new ArrayList<>();
 
+    public Color background = Color.yellow;
+    public Color forground = Color.black;
+    public int size = 20;
+
     private settingsFormular settingsFormular = new settingsFormular();
 
 
@@ -170,11 +174,11 @@ public class zeichenFormular extends javax.swing.JFrame {
         gameLost = false;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                setFieldColor(i, j, Color.GREEN);
+                setFieldColor(i, j, forground);
                 setNumber(i, j, 0);
                 setBomb(i, j, false);
                 setExplored(i, j, false);
-                setNumberColor(i,j,Color.GREEN);
+                setNumberColor(i,j,forground);
                 setFlag(i,j,false);
                 setIcon(i,j,"", Color.BLACK);
             }
@@ -202,7 +206,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                 resetButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
-                generateFreeSpaces(x,y,Color.pink);
+                generateFreeSpaces(x,y,background);
                 reloadProgress();
                 gameStarted = true;
 
@@ -225,9 +229,9 @@ public class zeichenFormular extends javax.swing.JFrame {
 
                 }else{
                     setExplored(x,y,true);
-                    setFieldColor(x,y,Color.PINK);
+                    setFieldColor(x,y,background);
                     setNumberColor(x,y,Color.BLACK);
-                    generateFreeSpaces(x,y,Color.PINK);
+                    generateFreeSpaces(x,y,background);
                     reloadProgress();
 
                 }
@@ -278,7 +282,7 @@ public class zeichenFormular extends javax.swing.JFrame {
                     setIcon(x,y,"💣", Color.BLACK);
                     continue;
                 }
-                generateFreeSpaces(x,y,Color.PINK);
+                generateFreeSpaces(x,y,background);
             }
         }
 //        for (int i = 0; i < 9; i++) {
@@ -291,6 +295,7 @@ public class zeichenFormular extends javax.swing.JFrame {
     }//GEN-LAST:event_revealButtonMouseClicked
 
     private void settingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsButtonMouseClicked
+        settingsFormular.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         settingsFormular.setVisible(true);
     }//GEN-LAST:event_settingsButtonMouseClicked
 
@@ -425,6 +430,27 @@ public class zeichenFormular extends javax.swing.JFrame {
                 zF.setTitle("MineSweeper");
             }
         });
+    }
+    public void applySettings(Color bg, Color fg, int newSize) {
+        this.background = bg;
+        this.forground = fg;
+        this.size = newSize;
+
+        // Beispiel: alle NICHT aufgedeckten Felder bekommen fg, aufgedeckte bg
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
+                if (!getExplored(x, y)) {
+                    setFieldColor(x, y, forground);
+                    setNumberColor(x, y, forground);
+                } else {
+                    setFieldColor(x, y, background);
+                    setNumberColor(x, y, getIntColor(getNumber(x, y)));
+                }
+            }
+        }
+
+        // optional: Panel neu zeichnen
+        zeichenPanel1.repaint();
     }
 
 
