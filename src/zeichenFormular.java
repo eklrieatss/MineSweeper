@@ -1,6 +1,7 @@
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import javax.swing.*;
@@ -21,13 +22,11 @@ public class zeichenFormular extends javax.swing.JFrame {
     boolean gameStarted = false;
     boolean gameLost = false;
     boolean gameWon = false;
-    private ArrayList<Integer> spawnX = new ArrayList<>();
-    private ArrayList<Integer> spawnY = new ArrayList<>();
 
-    public Color background = Color.yellow;
-    public Color forground = Color.black;
-    public int size = 20;
-    private int bombCount = 11;
+    public Color background = Color.pink;
+    public Color forground = Color.green;
+    public int size = 20; // not in use
+    private final int bombCount = 100;
 
 
     private settingsFormular settingsFormular;
@@ -211,20 +210,14 @@ public class zeichenFormular extends javax.swing.JFrame {
         loseLabel.setVisible(false);
         winLable.setVisible(false);
         revealButton.setEnabled(false);
-        spawnX = new ArrayList<>();
-        spawnY = new ArrayList<>();
 
     }//GEN-LAST:event_resetButtonMouseClicked
 
     private void zeichenPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zeichenPanel1MouseClicked
         int x = evt.getX()/22;
         int y = evt.getY()/22;
-
-        System.out.println(zF.getSize());
-
-
         if (evt.getButton()==evt.BUTTON1){
-            if (gameLost && gameWon){
+            if (gameLost || gameWon){
                 return;
             }
 
@@ -278,6 +271,19 @@ public class zeichenFormular extends javax.swing.JFrame {
             System.out.println("Color: " + rgbToAnsi(getColor(x,y)) + "■" + "\033[0m");
             System.out.println("Number: " + getNumber(x,y));
             System.out.println("NumberColor: " + rgbToAnsi(getNumberColor(x,y)) + "■" + "\033[0m");
+            System.out.println("Icon: " + getIcon(x,y));
+            System.out.println("IconColor: " + rgbToAnsi(getIconColor(x,y)) + "■" + "\033[0m");
+
+            int c = 0;
+            for (int i = 0; i < 20; i++) {
+                for (int j = 0; j < 20; j++) {
+                    if (getBomb(i,j)){
+                      c++;
+                    }
+                }
+            }
+            System.out.println("Bomben: " + c);
+
         }
         
         if (evt.getButton()==evt.BUTTON3){ //Rechtsklick
@@ -298,6 +304,10 @@ public class zeichenFormular extends javax.swing.JFrame {
                 }
             }
             reloadNumbers();
+            if (progressLabel.getText().equals((400-bombCount) + "/" + (400-bombCount)) && Integer.parseInt(flagCountLabel.getText()) == bombCount){
+                winLable.setVisible(true);
+                gameWon = true;
+            }
         }
     }//GEN-LAST:event_zeichenPanel1MouseClicked
 
@@ -309,7 +319,11 @@ public class zeichenFormular extends javax.swing.JFrame {
         for (int x = 0; x < 20; x++) {
             for (int y = 0; y < 20; y++) {
                 if (getBomb(x,y)){
-                    setFieldColor(x,y,Color.RED);
+                    if (getFlag(x,y)){
+                        setFieldColor(x,y,Color.GREEN);
+                    }else {
+                        setFieldColor(x,y,Color.RED);
+                    }
                     setIcon(x,y,"💣", Color.BLACK);
                     continue;
                 }
@@ -371,43 +385,40 @@ public class zeichenFormular extends javax.swing.JFrame {
 
     }
 
-    private void generateBombs(int startX, int startY){
+    private void generateBombs(int startX, int startY) {
         int sizeX = zeichenPanel1.getBreite();
         int sizeY = zeichenPanel1.getHoehe();
 
+        ArrayList<Point> possibleFields = new ArrayList<>();
 
-
+        // Alle erlaubten Felder sammeln
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
 
-                if (i == startX && j == startY){
-                    for (int k = i-1; k < i+2; k++) {
-                        for (int l = j-1; l < j+2; l++) {
-                            setBomb(k,l,false);
-                            //setColor(k,l,Color.GREEN);
-                            spawnX.add(k);
-                            spawnY.add(l);
-                        }
-                    }
+                boolean blocked =
+                        i >= startX - 1 && i <= startX + 1 &&
+                                j >= startY - 1 && j <= startY + 1;
+
+                if (!blocked) {
+                    possibleFields.add(new Point(i, j));
+                } else {
+                    setBomb(i, j, false);
                 }
-
-                if (spawnX.contains(i) && spawnY.contains(j)){
-                    //setColor(i,j,Color.GREEN);
-                    break;
-                }
-
-                int bombsPlaced = Integer.parseInt(bombsCountLabel.getText());
-                int remainingBombs = bombCount - bombsPlaced;
-                int remainingFields = sizeX*sizeY - (i*sizeY + j);
-
-                if (rn.nextDouble() < (double)remainingBombs / remainingFields) {
-                    setBomb(i,j,true);
-                    //setFieldColor(i,j,Color.RED);
-                    bombsCountLabel.setText(bombsPlaced + 1 + "");
-                }
-
             }
         }
+
+        // Liste mischen
+        Collections.shuffle(possibleFields, rn);
+
+        // Nicht mehr Bomben setzen als Felder da sind
+        int bombsToPlace = Math.min(bombCount, possibleFields.size());
+
+        for (int n = 0; n < bombsToPlace; n++) {
+            Point p = possibleFields.get(n);
+            setBomb(p.x, p.y, true);
+        }
+
+        bombsCountLabel.setText(String.valueOf(bombsToPlace));
     }
 
     private void reloadProgress(){
@@ -462,7 +473,6 @@ public class zeichenFormular extends javax.swing.JFrame {
         this.forground = fg;
         this.size = newSize;
 
-        // Beispiel: alle NICHT aufgedeckten Felder bekommen fg, aufgedeckte bg
         for (int x = 0; x < 20; x++) {
             for (int y = 0; y < 20; y++) {
                 if (!getExplored(x, y)) {
@@ -474,8 +484,6 @@ public class zeichenFormular extends javax.swing.JFrame {
                 }
             }
         }
-
-        // optional: Panel neu zeichnen
         zeichenPanel1.repaint();
     }
 

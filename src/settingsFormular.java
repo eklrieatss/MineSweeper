@@ -209,7 +209,7 @@ public class settingsFormular extends javax.swing.JFrame {
            return;
         }
         size = Integer.parseInt(sizeTextField.getText());
-        background = Color.decode(backgroundTextField.getText());
+        background = Color.decode(backgroundTextField .getText());
         forground = Color.decode(forgroundTextField.getText());
         reloadApply();
 
