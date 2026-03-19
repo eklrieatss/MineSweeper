@@ -225,7 +225,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                 resetButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
-                generateFreeSpaces(x,y,background);
+                //generateFreeSpaces(x,y,background);
+                generateFreeSpacesIterative(x,y,background);
                 reloadProgress();
                 gameStarted = true;
 
@@ -250,7 +251,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                     setExplored(x,y,true);
                     setFieldColor(x,y,background);
                     setNumberColor(x,y,Color.BLACK);
-                    generateFreeSpaces(x,y,background);
+                    //generateFreeSpaces(x,y,background);
+                    generateFreeSpacesIterative(x,y,background);
                     reloadProgress();
 
                 }
@@ -381,6 +383,15 @@ public class zeichenFormular extends javax.swing.JFrame {
                     generateFreeSpaces(i,j,c);
                 }
             }
+        }
+
+    }
+
+    private void generateFreeSpacesIterative(int x, int y, Color c) {
+        HashMap<Integer, Integer> field = new HashMap<>();
+        field.put(x,y);
+        while(field.isEmpty()){
+
         }
 
     }
