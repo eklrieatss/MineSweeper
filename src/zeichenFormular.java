@@ -23,6 +23,8 @@ public class zeichenFormular extends javax.swing.JFrame {
     boolean gameLost = false;
     boolean gameWon = false;
 
+    boolean iterative = false;  //das ändern um zwischen iterative und recursive zu wechseln (nicht in settingsmenu)
+
     public Color background = Color.pink;
     public Color forground = Color.green;
     public int size = 20; // not in use
@@ -225,8 +227,10 @@ public class zeichenFormular extends javax.swing.JFrame {
                 resetButtonMouseClicked(null);
                 generateBombs(x, y);
                 reloadNumbers();
-                //generateFreeSpaces(x,y,background);
-                generateFreeSpacesIterative(x,y,background);
+
+                if (iterative)generateFreeSpacesIterative(x,y,background);
+                else generateFreeSpaces(x,y,background);
+
                 reloadProgress();
                 gameStarted = true;
 
@@ -251,8 +255,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                     setExplored(x,y,true);
                     setFieldColor(x,y,background);
                     setNumberColor(x,y,Color.BLACK);
-                    //generateFreeSpaces(x,y,background);
-                    generateFreeSpacesIterative(x,y,background);
+                    if (iterative)generateFreeSpacesIterative(x,y,background);
+                    else generateFreeSpaces(x,y,background);
                     reloadProgress();
 
                 }
@@ -329,7 +333,8 @@ public class zeichenFormular extends javax.swing.JFrame {
                     setIcon(x,y,"💣", Color.BLACK);
                     continue;
                 }
-                generateFreeSpaces(x,y,background);
+                if (iterative)generateFreeSpacesIterative(x,y,background);
+                else generateFreeSpaces(x,y,background);
             }
         }
     }//GEN-LAST:event_revealButtonMouseClicked
@@ -388,10 +393,32 @@ public class zeichenFormular extends javax.swing.JFrame {
     }
 
     private void generateFreeSpacesIterative(int x, int y, Color c) {
-        HashMap<Integer, Integer> field = new HashMap<>();
-        field.put(x,y);
-        while(field.isEmpty()){
+        ArrayList<Point> list = new ArrayList<>();
 
+        setExplored(x, y, true);
+        list.add(new Point(x, y));
+
+        while (!list.isEmpty()) {
+
+            Point p = list.remove(0);
+            x = p.x;
+            y = p.y;
+
+            setFieldColor(x, y, c);
+            setNumberColor(x, y, getIntColor(getNumber(x, y)));
+
+            if (getNumber(x, y) != 0) continue;
+
+            for (int i = x - 1; i <= x + 1; i++) {
+                for (int j = y - 1; j <= y + 1; j++) {
+
+                    if (i < 0 || i > 19 || j < 0 || j > 19) continue;
+                    if (getBomb(i, j) || getExplored(i, j)) continue;
+
+                    setExplored(i, j, true);
+                    list.add(new Point(i, j));
+                }
+            }
         }
 
     }
