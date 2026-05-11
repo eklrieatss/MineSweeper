@@ -45,10 +45,8 @@ public class settingsFormular extends javax.swing.JFrame {
         jColorChooser1 = new javax.swing.JColorChooser();
         jLabel1 = new javax.swing.JLabel();
         closeButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        sizeTextField = new javax.swing.JTextField();
         applyButton = new javax.swing.JButton();
         forgroundColorDropDown = new javax.swing.JComboBox<>();
         backgroundTextField = new javax.swing.JTextField();
@@ -68,18 +66,9 @@ public class settingsFormular extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Size");
-
         jLabel3.setText("Background");
 
         jLabel4.setText("Forground");
-
-        sizeTextField.setText("20");
-        sizeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                sizeTextFieldKeyReleased(evt);
-            }
-        });
 
         applyButton.setText("Apply");
         applyButton.setEnabled(false);
@@ -136,26 +125,20 @@ public class settingsFormular extends javax.swing.JFrame {
                         .addComponent(closeButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(backgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(backgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(forgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(forgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(sizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 156, Short.MAX_VALUE)))
+                                .addComponent(backgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(backgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(24, 24, 24)
+                                .addComponent(forgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(forgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 148, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -163,21 +146,17 @@ public class settingsFormular extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(sizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(backgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(forgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(forgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                    .addComponent(forgroundTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(forgroundColorDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(closeButton)
                     .addComponent(applyButton))
@@ -197,7 +176,6 @@ public class settingsFormular extends javax.swing.JFrame {
         }
 
 
-        sizeTextField.setText(size + "");
         backgroundTextField.setText(colorToHex(background));
         forgroundTextField.setText(colorToHex(forground));
         setVisible(false);
@@ -208,7 +186,6 @@ public class settingsFormular extends javax.swing.JFrame {
         if (!applyButton.isEnabled()){
            return;
         }
-        size = Integer.parseInt(sizeTextField.getText());
         background = Color.decode(backgroundTextField .getText());
         forground = Color.decode(forgroundTextField.getText());
         reloadApply();
@@ -220,10 +197,6 @@ public class settingsFormular extends javax.swing.JFrame {
         parent.applySettings(background,forground,size);
 
     }//GEN-LAST:event_applyButtonMouseClicked
-
-    private void sizeTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sizeTextFieldKeyReleased
-        reloadApply();
-    }//GEN-LAST:event_sizeTextFieldKeyReleased
 
     private void backgroundTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_backgroundTextFieldKeyReleased
         reloadApply();
@@ -251,10 +224,9 @@ public class settingsFormular extends javax.swing.JFrame {
 
     private void reloadApply(){
         try {
-            int localSize = Integer.parseInt(sizeTextField.getText());
             Color localBackgroundColor = Color.decode(backgroundTextField.getText());
             Color localForgroundColor = Color.decode(forgroundTextField.getText());
-            applyButton.setEnabled(localSize != size || !localBackgroundColor.equals(background) || !localForgroundColor.equals(forground));
+            applyButton.setEnabled(!localBackgroundColor.equals(background) || !localForgroundColor.equals(forground));
         }catch (Exception e){
             applyButton.setEnabled(false);
         }
@@ -295,9 +267,7 @@ public class settingsFormular extends javax.swing.JFrame {
     private javax.swing.JTextField forgroundTextField;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField sizeTextField;
     // End of variables declaration//GEN-END:variables
 }
